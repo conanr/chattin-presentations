@@ -1,5 +1,6 @@
 require 'logger'
 require 'date'
+require 'yaml'
 
 RACK_ENV  = ENV["RACK_ENV"] || ENV["SINATRA_ENV"] || "development"
 DB_CONFIG = YAML.load(File.open('config/database.yml', &:read))[RACK_ENV]
