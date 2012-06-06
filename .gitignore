@@ -1,2 +1,4 @@
 .rvmrc
 db/*.sqlite3
+Vagrantfile
+.vagrant
