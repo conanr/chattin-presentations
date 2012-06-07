@@ -3,7 +3,6 @@ require 'rvm/capistrano'
 set :rvm_ruby_string, '1.9.3'
 set :rvm_type, :user
 
-require 'bundler/capistrano'
 set :application, "chattin-presentations"
 set :scm, :git
 set :repository,  "git@github.com:conanr/chattin-presentations.git"
@@ -17,7 +16,7 @@ ssh_options[:port] = 2222
 
 set :user, "vagrant"
 set :group, "vagrant"
-set :deploy_to, "/home/vagrant/websites/#{application}"
+set :deploy_to, "/home/vagrant/websites/chattin/#{application}"
 
 # set :use_sudo, true
 set :use_sudo, false
