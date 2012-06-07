@@ -8,9 +8,10 @@ set :scm, :git
 set :repository,  "git@github.com:conanr/chattin-presentations.git"
 
 # server "localhost", :app, :db, :primary => true
-set :host, "localhost" # We need to be able to SSH to that box as this user.
+set :host, ENV['VAGRANT_IP'] || "localhost"   # We need to be able to SSH to that box as this user.
 role :web, host
 role :app, host
+role :db,  host, :primary => true             # This is where Rails migrations will run
 ssh_options[:port] = 2222
 # ssh_options[:keys] = "~/.rvm/gems/ruby-1.9.3-p125@testdeploy/gems/vagrant-1.0.3/keys/vagrant"
 
