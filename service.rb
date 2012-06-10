@@ -39,7 +39,11 @@ class Service < Sinatra::Base
 
   get '/presentationowners/:id' do
     id = params[:id].to_i
-    PresentationOwners.where(id: id).to_json
+    PresentationOwners.find_by_id(id).to_json
+  end
+
+  get '/presentationowners' do
+    PresentationOwners.all.to_json
   end
 
   post '/presentationowners' do
