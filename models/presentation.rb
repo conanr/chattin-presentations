@@ -7,6 +7,6 @@ class Presentation < ActiveRecord::Base
   after_create :create_ownership
 
   def create_ownership
-    PresentationOwner.create({presentation_id: self.id,user_id: self.user_id})
+    pwner = PresentationOwner.create!({ presentation_id: self.id, user_id: self.user_id })
   end
 end
