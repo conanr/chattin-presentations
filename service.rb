@@ -36,4 +36,13 @@ class Service < Sinatra::Base
   post '/presentations' do
     Presentation.create!(json_body).to_json
   end
+
+  get '/presentationowners/:id' do
+    id = params[:id].to_i
+    PresentationOwners.where(id: id).to_json
+  end
+
+  post '/presentationowners' do
+    PresentationOwners.create!(json_body).to_json
+  end
 end
