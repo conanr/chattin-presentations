@@ -3,6 +3,7 @@ require 'active_record'
 require 'sinatra/base'
 
 require 'models/presentation.rb'
+require 'models/presentation_owner.rb'
 require 'helpers'
 require 'config'
 
@@ -34,6 +35,20 @@ class Service < Sinatra::Base
   end
 
   post '/presentations' do
-    Presentation.create!(json_body).to_json
+    begin
+      presentation = Presentation.create(json_body)
+      presentation
+    rescue => e
+      error 400, { errors: [ e.message ] }.to_json
+    end
+  end
+
+  get '/presentationowners/:id' do
+    id = params[:id].to_i
+    PresentationOwner.find_by_id(id).to_json
+  end
+
+  get '/presentationowners' do
+    PresentationOwner.all.to_json
   end
 end
