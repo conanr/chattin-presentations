@@ -40,5 +40,6 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
+  databases = YAML.load_file("config/database.yml")
+  ActiveRecord::Base.establish_connection(databases[Config.env])
 end

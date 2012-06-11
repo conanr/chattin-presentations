@@ -9,3 +9,4 @@ gem 'capistrano_colors'
 gem 'rvm-capistrano'
 gem "rake"
 gem "sqlite3"
+gem "rvm"
