@@ -2,6 +2,7 @@ require 'logger'
 require 'active_record'
 require 'sinatra/base'
 
+require 'models/invite.rb'
 require 'models/presentation.rb'
 require 'models/presentation_owner.rb'
 require 'helpers'
