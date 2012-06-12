@@ -2,13 +2,16 @@ require 'logger'
 require 'active_record'
 require 'sinatra/base'
 
+require 'models/invite.rb'
 require 'models/presentation.rb'
 require 'models/presentation_owner.rb'
 require 'helpers'
 require 'config'
+require 'padrino-mailer'
 
 class Service < Sinatra::Base
   helpers  Helpers
+  register Padrino::Mailer
 
   configure do
     databases = YAML.load_file("config/database.yml")
@@ -50,7 +53,18 @@ class Service < Sinatra::Base
   post '/invites' do
     begin
       invite = Invite.create(json_body)
-      invite
+      if invite.new_record?
+        error 400, { errors: [ invite.message ] }.to_json
+      else
+        email(
+          :from => "soapbox@soapbox.im", 
+          :to => invite.email, 
+          :subject => "You've been invited", 
+          :body=>"Join the chat at http://soapbox.im/presentations/#{invite.presentation.id}", 
+          :via => :smtp)
+        invite
+      end  
+
     rescue => e
       error 400, { errors: [ e.message ] }.to_json
     end
@@ -68,4 +82,13 @@ class Service < Sinatra::Base
   get '/presentationowners' do
     PresentationOwner.all.to_json
   end
+
+  set :delivery_method, :smtp => { 
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => "chatsoapbox@gmail.com",
+    :password             => "soapboxer",
+    :authentication       => :plain,
+    :enable_starttls_auto => true  
+  }
 end
