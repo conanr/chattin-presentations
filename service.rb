@@ -37,10 +37,27 @@ class Service < Sinatra::Base
   post '/presentations' do
     begin
       presentation = Presentation.create(json_body)
-      presentation
+      if presentation.new_record?
+        error 400, { errors: [ presentation.message ] }.to_json
+      else
+        presentation
+      end
     rescue => e
       error 400, { errors: [ e.message ] }.to_json
     end
+  end
+
+  post '/invites' do
+    begin
+      invite = Invite.create(json_body)
+      invite
+    rescue => e
+      error 400, { errors: [ e.message ] }.to_json
+    end
+  end
+
+  get '/invites' do
+    Invite.all.to_json
   end
 
   get '/presentationowners/:id' do
