@@ -31,6 +31,12 @@ class Service < Sinatra::Base
     Presentation.where(id: id).first.to_json
   end
 
+  get '/presentations/:id/presenters' do
+    id = params[:id].to_i
+    presenter_ids = PresentationOwner.find_all_by_presentation_id(id).collect{|p| p.user_id}
+    {"presenter_ids" => presenter_ids}.to_json
+  end
+
   get '/presentations' do
     Presentation.all.to_json
   end
@@ -59,14 +65,5 @@ class Service < Sinatra::Base
 
   get '/invites' do
     Invite.all.to_json
-  end
-
-  get '/presentationowners/:id' do
-    id = params[:id].to_i
-    PresentationOwner.find_by_id(id).to_json
-  end
-
-  get '/presentationowners' do
-    PresentationOwner.all.to_json
   end
 end
