@@ -60,11 +60,10 @@ class Service < Sinatra::Base
           :from => "soapbox@soapbox.im", 
           :to => invite.email, 
           :subject => "You've been invited", 
-          :body=>"Join the chat at http://soapbox.im/presentations/#{invite.presentation.id}", 
+          :body=>"Join the chat at http://soapbox.im/presentations/u/#{invite.u}/p/#{invite.p}",
           :via => :smtp)
         invite
       end  
-
     rescue => e
       error 400, { errors: [ e.message ] }.to_json
     end
