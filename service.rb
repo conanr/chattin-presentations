@@ -65,8 +65,8 @@ class Service < Sinatra::Base
         email(
           :from => "soapbox@soapbox.im", 
           :to => invite.email, 
-          :subject => "You've been invited", 
-          :body=>"Join the chat at http://soapbox.im/presentations/u/#{invite.u}/p/#{invite.p}",
+          :subject => "You've been invited to #{invite.presentation.title}", 
+          :body=>"Join now at http://soapbox.im/u/#{invite.u}/p/#{invite.p}",
           :via => :smtp)
         invite
       end  
