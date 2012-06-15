@@ -91,8 +91,8 @@ class Service < Sinatra::Base
   set :delivery_method, :smtp => { 
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    :user_name            => "chatsoapbox@gmail.com",
-    :password             => "soapboxer",
+    :user_name            => ENV['SOAPBOX_EMAIL'],
+    :password             => ENV['SOAPBOX_PASSWORD'],
     :authentication       => :plain,
     :enable_starttls_auto => true  
   }
