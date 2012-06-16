@@ -30,17 +30,34 @@ class Service < Sinatra::Base
 
   get '/presentations/:id' do
     id = params[:id].to_i
-    Presentation.where(id: id).first.to_json
+    presentation = Presentation.where(id: id).first
+    if presentation
+      presentation.to_json
+    else
+      error 404, {error: "presentation not found"}.to_json
+    end
   end
 
   get '/presentations/:id/presenters' do
     id = params[:id].to_i
     presenter_ids = PresentationOwner.find_all_by_presentation_id(id).collect{|p| p.user_id}
-    {"presenter_ids" => presenter_ids}.to_json
+    {"presenter_ids" => presenter_ids}
+    if presenter_ids
+      presenter_ids.to_json
+    else
+      error 404, {error: "no presenters found"}.to_json
+    end
+  end
+
+
   end
 
   get '/presentations' do
-    Presentation.all.to_json
+    begin
+      Presentation.all.to_json
+    rescue => e
+      error 400, { errors: [ e.message ] }.to_json
+    end
   end
 
   post '/presentations' do
@@ -76,23 +93,36 @@ class Service < Sinatra::Base
   end
 
   get '/invites' do
-    Invite.all.to_json
+    begin
+      Invite.all.to_json
+    rescue => e
+      error 400, { errors: [ e.message ] }.to_json
+    end
   end
 
   get '/presentationowners/:id' do
     id = params[:id].to_i
-    PresentationOwner.find_by_id(id).to_json
+    presentation_owner = PresentationOwner.find_by_id(id).to_json
+    if presentation_owner
+      presentation_owner.to_json
+    else
+      error 404, {error: "user not found"}.to_json
+    end
   end
 
   get '/presentationowners' do
-    PresentationOwner.all.to_json
+    begin
+      PresentationOwner.all.to_json
+    rescue => e
+      error 400, { errors: [ e.message ] }.to_json
+    end
   end
 
   set :delivery_method, :smtp => { 
     :address              => "smtp.gmail.com",
     :port                 => 587,
-    :user_name            => ENV['SOAPBOX_EMAIL'],
-    :password             => ENV['SOAPBOX_PASSWORD'],
+    :user_name            => 'chatsoapbox@gmail.com',
+    :password             => 'soapboxer',
     :authentication       => :plain,
     :enable_starttls_auto => true  
   }
