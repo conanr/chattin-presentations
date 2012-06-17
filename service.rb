@@ -47,12 +47,12 @@ class Service < Sinatra::Base
     begin
       presentation = Presentation.create(json_body)
       if presentation.new_record?
-        error 400, { errors: [ presentation.message ] }.to_json
+        error 400, { errors: "Could not successfully create Soapbox." }.to_json
       else
         presentation
       end
     rescue => e
-      error 400, { errors: [ e.message ] }.to_json
+      error 400, { errors: "Could not successfully create Soapbox." }.to_json
     end
   end
 
@@ -60,7 +60,7 @@ class Service < Sinatra::Base
     begin
       invite = Invite.create(json_body)
       if invite.new_record?
-        error 400, { errors: [ invite.message ] }.to_json
+        error 400, { errors: "Could not successfully send invite." }.to_json
       else
         email(
           :from => "soapbox@soapbox.im", 
@@ -71,7 +71,7 @@ class Service < Sinatra::Base
         invite
       end  
     rescue => e
-      error 400, { errors: [ e.message ] }.to_json
+      error 400, { errors: "Could not successfully send invite." }.to_json
     end
   end
 
