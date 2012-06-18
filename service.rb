@@ -49,7 +49,7 @@ class Service < Sinatra::Base
       if presentation.new_record?
         error 400, { errors: "Could not successfully create Soapbox." }.to_json
       else
-        presentation
+        presentation.to_json
       end
     rescue => e
       error 400, { errors: "Could not successfully create Soapbox." }.to_json
