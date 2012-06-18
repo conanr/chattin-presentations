@@ -11,3 +11,5 @@ gem "rake"
 gem "sqlite3"
 gem "rvm"
 gem 'padrino'
+gem "mysql2"
+gem "i18n"
